@@ -41,4 +41,4 @@ class Punt:
         return
     
     #schrijf operatoren
-    
+    #CREATE FORK
