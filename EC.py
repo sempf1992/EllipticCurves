@@ -6,7 +6,42 @@ class FiniteFieldElem:
         self.val = x_
         return
     
+    def __add__(self, other):
+        if not isinstance(other, FiniteFieldElem):
+            raise ValueError('Cannot add FiniteFieldElem with another instance')
+        if (self.Field != other.Field):
+            raise ValueError('Cannot add two elements of different finite fields')
+        return FiniteFieldElem(self.Field, self.val + other.val % self.Field)
     
+    def __sub__(self, other):
+        if not isinstance(other, FiniteFieldElem):
+            raise ValueError('Cannot subtract FiniteFieldElem with another instance')
+        if (self.Field != other.Field):
+            raise ValueError('Cannot subtract two elements of different finite fields')
+        return FiniteFieldElem(self.Field, self.val - other.val % self.Field)
+        
+    def __mul__(self, other):
+        if not isinstance(other, FiniteFieldElem):
+            raise ValueError('Cannot multiply FiniteFieldElem with another instance')
+        if (self.Field != other.Field):
+            raise ValueError('Cannot multiply two elements of different finite fields')
+        return FiniteFieldElem(self.Field, self.val * other.val % self.Field)
+    
+    def is_(self, other):
+        if not isinstance(other, FiniteFieldElem):
+            raise ValueError('Cannot compare FiniteFieldElem with another instance')
+        if (self.Field != other.Field):
+            raise ValueError('Cannot compare two elements of different finite fields')
+        return self.val == other.val
+        
+    def __div__(self, other):
+        if not isinstance(other, FiniteFieldElem):
+            raise ValueError('Cannot add FiniteFieldElem with another instance')
+        if (self.Field != other.Field):
+            raise ValueError('Cannot divide two elements of different finite fields')
+        #do the extended euclidean algorithm
+        
+        
 class Curve:
     
     #initialiseer een curve
