@@ -30,6 +30,13 @@ class FiniteFieldElem:
             raise ValueError('Cannot multiply two elements of different finite fields')
         return FiniteFieldElem(self.Field, self.val * other.val % self.Field)
     
+    def __pow__(self, other):
+        if not isinstance(other, int):
+            raise ValueError('Cannot take FiniteFieldElem to a non integer power')
+        if (other == 1):
+            return self
+        return self * self ** (other - 1)
+
     def is_(self, other):
         if not isinstance(other, FiniteFieldElem):
             raise ValueError('Cannot compare FiniteFieldElem with another instance')
