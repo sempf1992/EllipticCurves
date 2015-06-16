@@ -91,11 +91,11 @@ class Punt:
         return self  + other.inverteer()
 
     def __mul__(self,scalar): # telt a scalar maal bij a op
-    if not(scalar%1 ==0):
-        return Punt(0,0)
-    elif scalar ==1:
-        return self
-    elif scalar >1:
-        return (scalar-1)*self + self
-    else:
-        return scalar* self.inverteer()
+        if not(scalar%1 ==0):
+            return Punt(0,0)
+        elif scalar ==1:
+            return self
+        elif scalar >1:
+            return (scalar-1)*self + self
+        else:
+            return scalar* self.inverteer()
