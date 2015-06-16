@@ -82,7 +82,7 @@ class Punt:
         v = labda(x-self.x) + self.y
         return Punt(x,y)
     
-    def inverteer(self):
+    def __neg__(self):
         return Punt(-self.x,self.y)
     
     def __sub__(self,other): # trekt b van a af
