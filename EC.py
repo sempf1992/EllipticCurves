@@ -20,6 +20,9 @@ class FiniteFieldElem:
             raise ValueError('Cannot subtract two elements of different finite fields')
         return FiniteFieldElem(self.Field, self.val - other.val % self.Field)
         
+    def __neg__(self):
+        return FiniteFieldElem(self.Field, -self.val % self.Field)
+        
     def __mul__(self, other):
         if not isinstance(other, FiniteFieldElem):
             raise ValueError('Cannot multiply FiniteFieldElem with another instance')
@@ -39,9 +42,35 @@ class FiniteFieldElem:
             raise ValueError('Cannot add FiniteFieldElem with another instance')
         if (self.Field != other.Field):
             raise ValueError('Cannot divide two elements of different finite fields')
-        #do the extended euclidean algorithm
+        return self * other.inverse()
         
+    def inverse(self):
+        #do the extended euclidean algorithm to find an inverse for val
+        R_0 = self.Field
+        R_1 = self.val
         
+        S_0 = 1
+        S_1 = 0
+        
+        T_0 = 0
+        T_1 = 1
+        while (R_1 != 0):
+            Q = R_0//R_1
+            
+            R_2 = R_0 % R_1
+            S_2 = S_0 - S_1 * Q
+            T_2 = T_0 = T_1 * Q
+            
+            R_0 = R_1
+            R_1 = R_2
+            
+            S_0 = S_1
+            S_1 = S_2
+            
+            T_0 = T_1
+            T_1 = T_2
+        
+        return FiniteFieldElem(self.Field, T_2 % self.Field)
 class Curve:
     
     #initialiseer een curve
@@ -68,7 +97,7 @@ class Curve:
         
 class Punt:
     def __init__(self, curve, x_, y_):
-        self.curve = curve
+        self.Curve = curve
         #maak punten x en y aan
         self.x = x_
         self.y = y_
@@ -76,15 +105,16 @@ class Punt:
            raise ValueError('Point is not a point on the curve')
         return
     
-     def __add__(self,other): #gaat ervan uit dat je twee punten meegeeft
-        if not self.x == other.x
-        labda = (self.y - other.y)/(self.x - other.x)
-        x = labda*labda - self.x - other.x
-        v = labda(x-self.x) + self.y
-        return Punt(x,y)
-    
+    def __add__(self,other): #gaat ervan uit dat je twee punten meegeeft
+        if (self.x == other.x) == False:
+            labda = (self.y - other.y)/(self.x - other.x)
+            x = labda*labda - self.x - other.x
+            y = labda(x-self.x) + self.y
+            return Punt(self.Curve, x,y)
+        return self
+        
     def __neg__(self):
-        return Punt(-self.x,self.y)
+        return Punt(self.Curve, -self.x,self.y)
     
     def __sub__(self,other): # trekt b van a af
         return self  + other.inverteer()
@@ -97,4 +127,4 @@ class Punt:
         elif scalar >1:
             return (scalar-1)*self + self
         else:
-            return scalar* self.inverteer()
+            return (-scalar)* (-self)
