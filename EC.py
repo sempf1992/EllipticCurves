@@ -78,3 +78,24 @@ class Punt:
     
     #schrijf operatoren
     
+     def __add__(self,other): #gaat ervan uit dat je twee punten meegeeft
+        labda = (self.y - other.y)/(self.x - other.x)
+        x = labda*labda - self.x - other.x
+        v = labda(x-self.x) + self.y
+        return Punt(x,y)
+    
+    def inverteer(self):
+        return Punt(-self.x,self.y)
+    
+    def __sub__(self,other): # trekt b van a af
+        return self  + other.inverteer()
+
+    def __mul__(self,scalar): # telt a scalar maal bij a op
+    if not(scalar%1 ==0):
+        return Punt(0,0)
+    elif scalar ==1:
+        return self
+    elif scalar >1:
+        return (scalar-1)*self + self
+    else:
+        return scalar* self.inverteer()
