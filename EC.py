@@ -77,6 +77,7 @@ class Punt:
         return
     
      def __add__(self,other): #gaat ervan uit dat je twee punten meegeeft
+        if not self.x == other.x
         labda = (self.y - other.y)/(self.x - other.x)
         x = labda*labda - self.x - other.x
         v = labda(x-self.x) + self.y
