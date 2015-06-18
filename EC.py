@@ -123,7 +123,7 @@ class Punt:
             return self #point to infinity and B3Y0ND # LATER AANPASSEN!!!!!!!!!!!!!!!!!!
         else:
             #curve is van de vorm y^2=x^3 +ax +b 
-            a = self.Curve(1) - self.Curve(0) -1
+            a = self.Curve.a
             labda = (3 * self.x * self.x + a)/ (2* self.y)
             x = labda * labda - 2 * self.x
             y = labda (self.x - x) - self.y
