@@ -103,6 +103,7 @@ class Curve:
         return Punt(self, FiniteFieldElem(self.Prime, x), FiniteFieldElem(self.Prime, y))
         
 class Punt:
+
     def __init__(self, curve, x_, y_):
         self.Curve = curve
         #maak punten x en y aan
@@ -117,17 +118,28 @@ class Punt:
             labda = (self.y - other.y)/(self.x - other.x)
             x = labda*labda - self.x - other.x
             y = labda(x-self.x) + self.y
-            return Punt(self.Curve, x,y)
+            return Punt(self.Curve, x, y)
+        elif (self.x == - other.x):
+            return self #point to infinity and B3Y0ND # LATER AANPASSEN!!!!!!!!!!!!!!!!!!
+        else:
+            #curve is van de vorm y^2=x^3 +ax +b 
+            a = self.Curve(1) - self.Curve(0) -1
+            labda = (3 * self.x * self.x + a)/ (2* self.y)
+            x = labda * labda - 2 * self.x
+            y = labda (self.x - x) - self.y
+            return Punt(self.Curve, x, y)
         return self
         
     def __neg__(self):
-        return Punt(self.Curve, -self.x,self.y)
+        return Punt(self.Curve, -self.x, self.y)
     
     def __sub__(self,other): # trekt b van a af
         return self  + other.inverteer()
 
     def __mul__(self,scalar): # telt a scalar maal bij a op
-        if not scalar%1 ==0 :
+        if scalar ==0:
+            return self #point to infinity and B3Y0ND # LATER AANPASSEN!!!!!!!!!!!!!!!!!!
+        if not isinstance(scalar, int) :
             raise ValueError('Cannot multiply by non-integer')
         elif scalar ==1:
             return self
