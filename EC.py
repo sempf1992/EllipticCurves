@@ -137,13 +137,22 @@ class Punt:
         return self  + other.inverteer()
 
     def __mul__(self,scalar): # telt a scalar maal bij a op
+        #if self == infty:
+        #    return infty
         if scalar ==0:
             return self #point to infinity and B3Y0ND # LATER AANPASSEN!!!!!!!!!!!!!!!!!!
         if not isinstance(scalar, int) :
             raise ValueError('Cannot multiply by non-integer')
-        elif scalar ==1:
+        elif scalar ==1: #keer 1 is identiteit
             return self
         elif scalar >1:
-            return (scalar-1)*self + self
+            if scalar%2==0: # splitst de vermenigvuldiging in tweeen
+                a = (scalar/2)*self
+                return a+a
+            else: # hier ook maar dan voor oneven
+                scalar = scalar -1
+                a = (scalar/2)*self
+                return self + a + a
+            return (scalar-1)*self + self #dit zodat hij igg iets wat goed is teruggeeft, is minder efficient
         else:
-            return (-scalar)* (-self)
+            return (-scalar)* (-self) #maal mingetal is zelfde als positievegetal keer gespiegelde punt
