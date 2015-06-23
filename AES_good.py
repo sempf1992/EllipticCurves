@@ -86,7 +86,7 @@ def text2matrix(text, j):
         if i % 4 == 0:
             matrix.append([byte])
         else:
-            matrix[i / 4].append(byte)
+            matrix[i // 4].append(byte)
     return matrix
 
 
@@ -110,7 +110,7 @@ class AES:
             if i % 4 == 0:
                 byte = self.round_keys[i - 4][0] \
                     ^ Sbox[self.round_keys[i - 1][1]] \
-                    ^ Rcon[i / 4]
+                    ^ Rcon[i // 4]
                 self.round_keys[i].append(byte)
 
                 for j in range(1, 4):
@@ -136,22 +136,19 @@ class AES:
 
         i = 0
         blocks = len(plaintext) // 16
+        
 
         while (i < blocks):
             self.plain_state = text2matrix(plaintext, 16 * i)
-            print(self.plain_state)
             roundout = self.encrypt_block()
-            # print(roundout)
-            self.cipher_state = roundout
-            roundout = self.decrypt_block()
-            print(roundout)
-
             matrix2text_append(roundout, ciphertext)
             i += 1
 
         return ciphertext
 
     def encrypt_block(self):
+        
+        self.__ADD_IV(self.plain_state)
 
         self.__add_round_key(self.plain_state, self.round_keys[:4])
 
@@ -161,7 +158,9 @@ class AES:
         self.__sub_bytes(self.plain_state)
         self.__shift_rows(self.plain_state)
         self.__add_round_key(self.plain_state, self.round_keys[40:])
-
+        
+        self.__SET_IV(self.plain_state)
+        
         return self.plain_state
 
     def decrypt(self, ciphertext):
@@ -169,12 +168,11 @@ class AES:
 
         i = 0
         blocks = len(ciphertext) // 16
-
+        
+        self.IV_copy = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
         while (i < blocks):
             self.cipher_state = text2matrix(ciphertext, 16 * i)
-            print(self.cipher_state)
             roundout = self.decrypt_block()
-            print(roundout)
             matrix2text_append(roundout, plaintext)
             i += 1
 
@@ -185,14 +183,22 @@ class AES:
         return plaintext
 
     def decrypt_block(self):
+        
+        #copy the current state for the next iv
+        for i in range(4):
+            for j in range(4):
+                self.IV_copy[i][j] = self.cipher_state[i][j]
+
         self.__add_round_key(self.cipher_state, self.round_keys[40:])
         self.__inv_shift_rows(self.cipher_state)
         self.__inv_sub_bytes(self.cipher_state)
 
         for i in range(9, 0, -1):
             self.__round_decrypt(self.cipher_state, self.round_keys[4 * i: 4 * (i + 1)])
+            
         self.__add_round_key(self.cipher_state, self.round_keys[:4])
-
+        self.__ADD_IV(self.cipher_state)
+        self.__SET_IV(self.IV_copy)
         return self.cipher_state
 
     def __ADD_IV(self, s):
@@ -203,7 +209,7 @@ class AES:
     def __SET_IV(self, s):
         for i in range(4):
             for j in range(4):
-                self.iv = s[i][j]
+                self.iv[i][j] = s[i][j]
 
     def __add_round_key(self, s, k):
         for i in range(4):
@@ -271,15 +277,19 @@ class AES:
     def selftest(self):
         tests = 0
         master_key = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        while (tests < 100000):
+        self.instate = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+        
+        self.IV_copy = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+        
+        while (tests < 10000):
             for i in range(4):
                 for j in range(4):
-                    self.iv[i][j] = random.randint(0, 255)
+                    self.instate[i][j] = random.randint(0, 255)
                     master_key[i * 4 + j] = random.randint(0, 255)
 
             self.change_key(master_key)
 
-            self.plain_state = self.iv
+            self.plain_state = self.instate
 
             roundout = self.encrypt_block()
 
@@ -288,7 +298,7 @@ class AES:
 
             for i in range(4):
                 for j in range(4):
-                    if (roundout[i][j] != self.iv[i][j]):
+                    if (roundout[i][j] != self.instate[i][j]):
                         print("WHolla")
 
             tests += 1
