@@ -11,17 +11,17 @@ class FiniteFieldElem:
             raise ValueError('Cannot add FiniteFieldElem with another instance')
         if (self.Field != other.Field):
             raise ValueError('Cannot add two elements of different finite fields')
-        return FiniteFieldElem(self.Field, self.val + other.val % self.Field)
+        return FiniteFieldElem(self.Field, (self.Field + self.val + other.val) % self.Field)
     
     def __sub__(self, other):
         if not isinstance(other, FiniteFieldElem):
             raise ValueError('Cannot subtract FiniteFieldElem with another instance')
         if (self.Field != other.Field):
             raise ValueError('Cannot subtract two elements of different finite fields')
-        return FiniteFieldElem(self.Field, self.val - other.val % self.Field)
+        return FiniteFieldElem(self.Field, (self.Field + self.val - other.val) % self.Field)
         
     def __neg__(self):
-        return FiniteFieldElem(self.Field, -self.val % self.Field)
+        return FiniteFieldElem(self.Field, (self.Field-self.val) % self.Field)
         
     def __mul__(self, other):
         if not isinstance(other, FiniteFieldElem):
