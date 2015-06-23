@@ -114,13 +114,15 @@ class Punt:
         return
     
     def __add__(self,other): #gaat ervan uit dat je twee punten meegeeft
+        if not self.curve == other.curve:
+            raise ValueError('Points are on different curves')
         if (self.x == other.x) == False:
             labda = (self.y - other.y)/(self.x - other.x)
             x = labda*labda - self.x - other.x
             y = labda(x-self.x) + self.y
             return Punt(self.Curve, x, y)
         elif (self.x == - other.x):
-            return self #point to infinity and B3Y0ND # LATER AANPASSEN!!!!!!!!!!!!!!!!!!
+            return Eenheid(self.curve) # point to infinity and B3Y0ND
         else:
             #curve is van de vorm y^2=x^3 +ax +b 
             a = self.Curve.a
@@ -130,29 +132,51 @@ class Punt:
             return Punt(self.Curve, x, y)
         return self
         
-    def __neg__(self):
-        return Punt(self.Curve, -self.x, self.y)
+    def __neg__(self): # reflecteert in de x-as
+        return Punt(self.Curve, self.x, -self.y)
     
     def __sub__(self,other): # trekt b van a af
+        if not self.curve == other.curve:
+            raise ValueError('Points are on different curves')
         return self  + other.inverteer()
 
     def __mul__(self,scalar): # telt a scalar maal bij a op
-        #if self == infty:
-        #    return infty
-        if scalar ==0:
-            return self #point to infinity and B3Y0ND # LATER AANPASSEN!!!!!!!!!!!!!!!!!!
         if not isinstance(scalar, int) :
             raise ValueError('Cannot multiply by non-integer')
-        elif scalar ==1: #keer 1 is identiteit
+        if isinstance(self,Eenheid): # veelvoud van eenheid is eenheid
+            return self
+        if scalar ==0:
+            return Eenheid(self.curve) # point to infinity and B3Y0ND!
+        elif scalar ==1: # keer 1 is identiteitsoperatie
             return self
         elif scalar >1:
-            if scalar%2==0: # splitst de vermenigvuldiging in tweeen
+            if scalar%2==0: # splitst de vermenigvuldiging in tweeën
                 a = (scalar/2)*self
                 return a+a
             else: # hier ook maar dan voor oneven
                 scalar = scalar -1
                 a = (scalar/2)*self
                 return self + a + a
-            return (scalar-1)*self + self #dit zodat hij igg iets wat goed is teruggeeft, is minder efficient
+            return (scalar-1)*self + self # dit zodat hij in ieder geval iets wat goed is teruggeeft, is minder efficient
         else:
-            return (-scalar)* (-self) #maal mingetal is zelfde als positievegetal keer gespiegelde punt
+            return (-scalar)* (-self) # maal mingetal is zelfde als positievegetal keer gespiegelde punt
+class Eenheid(Punt):
+    def __init__(self, curve): # het is alleen belangrijk op welke curve hij zit
+        self.Curve = curve
+        return
+
+    def __add__(self,other): # gaat ervan uit dat je twee punten meegeeft
+        if not self.curve == other.curve:
+            raise ValueError('Points are on different curves')
+        return other
+        
+    def __neg__(self): # negatie van eenheid is eenheid
+        return self
+    
+    def __sub__(self,other): # trekt b van a af
+        if not self.curve == other.curve:
+            raise ValueError('Points are on different curves')
+        return -other
+
+    def __mul__(self,scalar): # telt a scalar maal bij a op
+        return self
