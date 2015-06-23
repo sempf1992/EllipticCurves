@@ -1,4 +1,5 @@
 # telnet program example
+# source: http://www.binarytides.com/code-chat-application-server-client-sockets-python/
 import socket, select, string, sys
 
 def prompt() :
