@@ -1,5 +1,5 @@
 # Tcp Chat server
-
+# source: http://www.binarytides.com/code-chat-application-server-client-sockets-python/
 import socket, select
 
 #Function to broadcast chat messages to all connected clients
