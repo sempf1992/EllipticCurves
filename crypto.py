@@ -1,4 +1,6 @@
 from AES_good import AES
+from EC import *
+import random
 
 def texttobytes(text):
     bytes = []
@@ -16,18 +18,40 @@ def bytestotext(bytes):
         i += 1
     return text
         
+class LSEC: #Locally Stored Elliptic Curve
+		#using curve P-521, source: http://cs.ucsb.edu/~koc/ccs130h/notes/ecdsa-cert.pdf page 42 
+		p = 1
+		a = 0
+		b = 0
+		xG = 0 #xG,yG finite field elements
+		yG = 0
+		G = Punt(xG,yG)
 class Crypto:
     def Crypto(self):
         #do the initialisation
         return
         
     def KeyAgreement(self):
-        #do a Diffey-Helman key exchange
+        #do a Diffie-Helman key exchange	
         key =  texttobytes('h?2Trq]k8$s;H,D+')
         iv = texttobytes('h?2Trq]k8$s;H,D+')
         self.AES = AES(key, iv)
         return
     
+	def DHSendHost(self, target):
+	    a = random.randint(5014,7234)
+		return LSEC.G*a #send this to target
+
+	def DHRecHost(self, UGmessage):
+		return UGmessage*a #shared secret for host
+		
+	def DHSendUser(self, host):
+		b = random.random(2012,4234)
+		return LSEC.G*b #send this to host
+		
+	def DHRecUser(self, HGmessage):
+		return HGmessage*b #shared secret for user with host
+	
     def Encrypt(self, plaintext):
         plaintextbytes = texttobytes(plaintext)
         ciphertextbytes = self.AES.encrypt(plaintextbytes)
