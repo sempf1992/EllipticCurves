@@ -64,8 +64,8 @@ class Crypto:
 		iv = texttobytes('h?2Trq]k8$s;H,D+')
 		self.AES_enc = AES(key, iv)
 		self.AES_dec = AES(key, iv)
-		self.enc_hmac = hmac.new(key2)#, "", hashlib.sha256)
-		self.dec_hmac = hmac.new(key2)#, "", hashlib.sha256)
+		self.enc_hmac = hmac.new(key2, bytes('', 'utf-8'), hashlib.sha256)
+		self.dec_hmac = hmac.new(key2, bytes('', 'utf-8'), hashlib.sha256)
 		return
     
 	def DHSendHost(self):
