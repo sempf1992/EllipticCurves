@@ -35,10 +35,8 @@ if __name__ == "__main__":
 	
 	while 1:
 		socket_list = [sys.stdin, s]
-		
 		# Get the list sockets which are readable
 		read_sockets, write_sockets, error_sockets = select.select(socket_list , [], [])
-		
 		for sock in read_sockets:
 			#incoming message from remote server
 			if sock == s:
@@ -55,8 +53,9 @@ if __name__ == "__main__":
 					elif data[0] == 'k':
 						data = data[1:]
 						crypto.DHRecUser(data)
+						sys.stdout.write('\rHandshake complete\n')
 					else:
-						sys.stout.write('Input data of non specified format received')
+						sys.stdout.write('Input data of non specified format received')
 					prompt()
 			
 			#user entered a message
