@@ -1,5 +1,6 @@
 # telnet program example
 import socket, select, string, sys
+from crypto import Crypto
 
 def prompt() :
 	sys.stdout.write('<You> ')
@@ -24,6 +25,10 @@ if __name__ == "__main__":
 	except :
 		print('Unable to connect')
 		sys.exit()
+
+	crypto = Crypto()
+	msg = ('k' + crypto.DHSendUser()).encode('utf-8')
+	s.send(msg)
 	
 	print('Connected to remote host. Start sending messages')
 	prompt()
@@ -41,13 +46,21 @@ if __name__ == "__main__":
 				if not data :
 					print('\nDisconnected from chat server')
 					sys.exit()
-				else :
+				else:
 					#print data
-					sys.stdout.write(data.decode('utf-8'))
+					data = data.decode('utf-8')
+					if data[0] == 'm':
+						data = data[1:]
+						sys.stdout.write(crypto.Decrypt(data))
+					elif data[0] == 'k':
+						data = data[1:]
+						crypto.DHRecUser(data)
+					else:
+						sys.stout.write('Input data of non specified format received')
 					prompt()
 			
 			#user entered a message
 			else :
 				msg = sys.stdin.readline()
-				s.send(msg.encode('utf-8'))
+				s.send(('m' + crypto.Encrypt(msg)).encode('utf-8'))
 				prompt()
