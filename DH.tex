@@ -70,8 +70,16 @@ Het veld waar wat we gaan gebruiken is $\mathbb{F}_p$ dit is het veld, waarbij d
 Hashmag 256 wordt gebruikt
 \section{Implementatie: chat applicatie}
 Om een chat applicatie te maken hebben we het volgende gedaan:
-We hebben een onversleutelde chatapplicatie (server en client) gekopieerd van het internet om later aan te passen, een paar klassen geschreven om met de elliptische krommen om te gaan en als laatse  een klasse om te versleutelen en ontsleutelen van de tekst met AES geschreven.
-
+We hebben een onversleutelde chatapplicatie (server en client) gekopieerd van het internet om later aan te passen, een paar klassen geschreven om met de elliptische krommen om te gaan en als laatse  een klasse om te versleutelen en ontsleutelen van de tekst met AES geschreven.\\
+ruw bestandenoverzicht:\\
+\begin{itemize}
+\item AES.py de inhoud van dit bestand wordt gebruikt voor AES encryptie en decryptie.
+\item EC.py wordt gebruikt om te defini\"eren wat een punt, curve en finite field is.
+\item crypto.py is verantwoordelijk voor het toepassen van AES op de tekst en het afspreken van de keys met Diffie-Hellman.
+\item tcp.py is het serverprogramma, deze gebruikt bovenstaande bestanden om een connectie op te zetten en communiceert alles van de aangesloten clients door, dit doet hij door met elk van de clients Diffie-Hellman protocol af te gaan.
+\item telnet.py is de client, deze moet communiceren met de server, weergeven wat er binnenkomt en ook weergeven wat je hebt getypt.
+\end{itemize}
+\subsection{diepere werking}
 \section{Conclusie}
 
 \end{document}
