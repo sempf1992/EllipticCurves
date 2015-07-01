@@ -28,8 +28,12 @@ if __name__ == "__main__":
 
 	crypto = Crypto()
 	msg = ('k' + crypto.DHSendUser()).encode('utf-8')
-	s.send(msg)
-	
+	try:
+		s.send(msg)
+	except:
+		print('connection error')
+		sys.exit()
+		
 	print('Connected to remote host. Start sending messages')
 	prompt()
 	
