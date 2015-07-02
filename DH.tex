@@ -29,7 +29,7 @@
 Tegenwoordig is het steeds belangrijker communicatie via het internet te versleutelen. Zelfs als informatie nietszeggend blijkt te zijn kunnen mensen die het onderscheppen veel daaruit opmaken. Voorbeeld hiervan heb ik gezien bij een gastcollege van het vak Databases, hier liet de gastspreker zien dat je op basis van geringe informatie over een persoon, vaak relatief eenvoudig een kleine groep mensen kan construeren die het zou kunnen zijn. Zover ik weet is het ook volledig legaal om die informatie af te tappen als het onversleuteld is.\\
 Dit verslag gaat over hoe je het Diffie-Hellman protocol kunt gebruiken om versleutelde communicatie op te zetten. Voor dit protocol is een systeem nodig om in te werken. Het systeem dat we gebruiken zullen we doen met een eindige cyclische multiplicatieve groep, deze cre\"eren we met behulp van een elliptische kromme. Verder willen we het bericht ondertekenen, dit zodat de ontvanger weet dat het van ons komt, het kan namelijk zo zijn dat iemand anders contact probeert te zoeken met de ontvanger en valse berichten stuurt. Om af te sluiten gaan we in op hoe we deze technieken/algoritmen hebben ge\"implementeerd in python.
 \section{Diffie-Hellman protocol}
-Het Diffie-Hellman protocol is een protocol om een sleutel af te spreken die vervolgens gebruikt kan worden voor versleutelde communicatie. Het protocol berust, netzoals alle cryptografische systemen, op het feit dat een bepaalde bewerking, bijvoorbeeld multiplicatie in een bepaalde groep die niet makkelijk om te keren is.\\
+Het Diffie-Hellman protocol is een protocol om een sleutel af te spreken die vervolgens gebruikt kan worden voor versleutelde communicatie. Het protocol berust op het feit dat een bepaalde bewerking, bijvoorbeeld multiplicatie in een bepaalde groep, niet makkelijk om te keren is.\\
 Laten we het protocol beschrijven:\\
 In de Cryptografie is het standaard dat de bedoeling is dat een bericht van A, Alice, naar B, Bob, gaat zonder dat E, Eve, mee kan luisteren.
 \begin{itemize}
@@ -67,7 +67,7 @@ Een eindig veld $F$ heeft de volgende eisen:
 Het veld waar wat we gaan gebruiken is $\mathbb{F}_p$ dit is het veld, waarbij de gehele getallen in restklassen modulo $p$ elementen zijn van het veld. Gegeven dat $p$ priem is voldoet $\mathbb{F}_p$ aan de eisen. Wat verder nog op te merken valt is dat we hieruit ook geheeltallige machtsverheffing kunnen gebruiken.
 
 \section{Ondertekenen}
-Hashmag 256 wordt gebruikt
+Voor het ondertekenen van de berichten gebruiken we een HMAC (Hash-based Message Authentication Code). Voor HMAC is een cryptografisch veilige hash-functie nodig, hiervoor gebruiken we SHA256. Anders dan bij gebruikelijke hashfuncties zijn deze gemaakt op zo'n manier dat het erg moeilijk is om twee inputs te vinden die dezelfde output geven, daarnaast moet de input niet te achterhalen zijn. De input die wij gebruiken is de versleutelde tekst. 
 \section{Implementatie: chat applicatie}
 Om een chat applicatie te maken hebben we het volgende gedaan:
 We hebben een onversleutelde chatapplicatie (server en client) gekopieerd van het internet om later aan te passen, een paar klassen geschreven om met de elliptische krommen om te gaan en als laatse  een klasse om te versleutelen en ontsleutelen van de tekst met AES geschreven.\\
@@ -80,6 +80,23 @@ ruw bestandenoverzicht:\\
 \item telnet.py is de client, deze moet communiceren met de server, weergeven wat er binnenkomt en ook weergeven wat je hebt getypt.
 \end{itemize}
 \subsection{diepere werking}
+hieronder een overzicht van de klassen, bestanden en de relaties ertussen, een gerichte pijl betekent dat waar de pijl naar wijst gebruikt wordt door waar hij vandaan komt.\\
+PLAATJE skype\\
+
+\subsubsection{EC.py}
+Dit bestand bevat alles wat nodig is om met de elliptische krommen te kunnen werken. De klasse FiniteFieldElem is ervoor om te zorgen dat er in het eindige lichaam gewerkt kan worden i.c.m. de elliptische kromme, heeft de variabele $p$ om $\mathbb{F}_p$ te kunnen vormen.\\ De klasse Curve heeft twee variabelen $a$ en $b$ zoals eerder om de kromme te defini\"{e}ren en $p$ om aan te geven op welk finitefield we werken.\\
+De klasse Punt stelt een punt op een kromme voor, de variabelen x en y zijn FiniteFieldElem's, de klasse Eenheid is een subklasse van Punt en stelt het eenheidselement voor.
+\subsubsection{AES.py}
+Dit bestand zorgt ervoor dat tekst versleuteld kan worden d.m.v. AES.
+\subsubsection{Crypto.py}
+Dit bestand bevat de klasse LSEC, wat defini\"eert op welke kromme en eindig lichaam we werken  en de klasse crypto.
+De klasse crypto gebruikt zowel AES.py als EC.py, de laatste hiervan om een sleutel af te spreken. AES om de versleuteling van de berichten te doen.
+\subsubsection{tcp.py}
+dit is de server, hij gebruikt crypto om de berichten te versleutelen en met de clients keys af te spreken.
+\subsubsection{telnet.py}
+dit is de client, zelfde als tcp maar dan om met de server een key af te spreken.
+
+
 \section{Conclusie}
 
 \end{document}
