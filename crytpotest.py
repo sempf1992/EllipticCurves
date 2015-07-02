@@ -55,6 +55,7 @@ class LSEC: #Locally Stored Elliptic Curve
 class Crypto:
 	def Crypto(self):
 		#do the initialisation
+		self.KeySetup = False
 		return
         
 	def KeyGen(self, KeyData, isHost):
@@ -102,36 +103,44 @@ class Crypto:
     
 	def DHSendHost(self):
 		self.a = random.randint(1, LSEC.n)
+		self.KeySetup = True
 		return str(LSEC.G.Clone()*self.a) #send this to target
 
 	def DHRecHost(self, UGmessage):
-		if UGmessage == "id":
-			RecPoint = Eenheid(LSEC.curve)
-		else:
-			prime = LSEC.p
-			x_ = int(UGmessage.split()[1])
-			x = FiniteFieldElem(prime, x_)
-			y_ = int(UGmessage.split()[3])
-			y = FiniteFieldElem(prime, y_)
-			RecPoint = Punt(LSEC.curve, x,y)
-		self.KeyGen(RecPoint * self.a, True)
+		if self.KeySetup:
+			if UGmessage == "id":
+				RecPoint = Eenheid(LSEC.curve)
+			else:
+				prime = LSEC.p
+				x_ = int(UGmessage.split()[1])
+				x = FiniteFieldElem(prime, x_)
+				y_ = int(UGmessage.split()[3])
+				y = FiniteFieldElem(prime, y_)
+				RecPoint = Punt(LSEC.curve, x,y)
+			self.KeyGen(RecPoint * self.a, True)
+			self.a = 0
+			self.KeySetup = False
 		return
 		
 	def DHSendUser(self):
 		self.b = random.randint(1,LSEC.n)
+		self.KeySetup = True
 		return str(LSEC.G.Clone()*self.b) #send this to host
 		
 	def DHRecUser(self, HGmessage):
-		if HGmessage == "id":
-			RecPoint = Eenheid(LSEC.curve)
-		else:
-			prime = LSEC.p
-			x_ = int(HGmessage.split()[1])
-			x = FiniteFieldElem(prime, x_)
-			y_ = int(HGmessage.split()[3])
-			y = FiniteFieldElem(prime, y_)
-			RecPoint = Punt(LSEC.curve, x,y)
-		self.KeyGen(RecPoint * self.b, False)
+		if self.KeySetup:
+			if HGmessage == "id":
+				RecPoint = Eenheid(LSEC.curve)
+			else:
+				prime = LSEC.p
+				x_ = int(HGmessage.split()[1])
+				x = FiniteFieldElem(prime, x_)
+				y_ = int(HGmessage.split()[3])
+				y = FiniteFieldElem(prime, y_)
+				RecPoint = Punt(LSEC.curve, x,y)
+			self.KeyGen(RecPoint * self.b, False)
+			self.b = 0
+			self.KeySetup = False
 		return 
 	
 	def Encrypt(self, plaintext):
