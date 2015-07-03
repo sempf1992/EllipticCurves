@@ -18,26 +18,6 @@
 \usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{matrix}
-\documentclass{article}
-\usepackage[pdftex]{graphicx}
-\usepackage[export]{adjustbox}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage[dutch]{babel}
-\usepackage{fullpage}
-\usepackage{epsfig}
-\usepackage[T1]{fontenc}
-\usepackage{epstopdf}
-\usepackage{relsize}
-\newcommand{\zv}{\blacksquare}
-\newcommand{\wv}{\square}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\N}{\mathbb{N}}
-\usepackage{float}
-\usepackage[caption = false]{subfig}
-\usepackage{graphicx}
-\usepackage{tikz}
-\usetikzlibrary{matrix}
 \begin{document}
 
 \title{Elliptische Kromme Diffie-Hellman}
@@ -150,4 +130,8 @@ Onze server is niet beveiligd tegen alle sidechannel aanvallen. Onze DH suite is
 Er bestaan ook aanvallen tegen AES en DH. Deze aanvallen zijn puur theoretisch op dit moment en zijn niet praktisch haalbaar. Als het discrete logarithme probleem wordt opgelost zou dit een flinke klap zijn voor de veiligheid van versleutelings algoritmen gebaseerd op Diffie-Hellman sleutel uitwisseling. Echter zijn elliptische krommen resistanter dan andere varianten van het Diffie-Hellman protocol. Verder zou het kunnen dat AES gebroken wordt en er een ciphertext aanval komt. Dit is echter onwaarschijnlijk aangezien AES een goed onderzocht protocol is, gebaseerd op wiskundig goed onderbouwde methoden. Ten derde zou men een aanval tegen bijvoorbeeld SHA256 kunnen vinden zodat de message authenticatie vervalst kan worden en mensen daarna side channel aanvallen tegen gewoon cbc AES gaan doen via adaptive chosen ciphertext. Dit is echter moeilijker omdat de code die we geschreven hebben geen resultaat terug geeft over hoe lang het duurde om alles te ontsleutelen en of de ontsleuteling gelukt is. Dus via deze methode kun je ook geen delen van de data terugvinden.
 \section{Conclusie}
 We hebben in dit project een applicatie geschreven waarbij men redelijk veilig kan communiceren over het internet. Als een user eenmaal veilig de verbinding tot stand heeft gebracht kan men moeilijk het verkeer af luisteren. De optie om de servereigenaar af te kopen en de geheimen prijs te geven blijft echter altijd bestaan. Een manier om dit te voorkomen is de server en een van de clients op dezelfde computer te draaien en via andere communicatie af te spreken wie de server beheert.
+\section{gebruikte bronnen}
+http://www.binarytides.com/code-chat-application-server-client-sockets-python/\\
+https://github.com/bozhu/AES-Python\\
+en andere eventuele bronnen vermeld in de python3 bestanden.
 \end{document}
