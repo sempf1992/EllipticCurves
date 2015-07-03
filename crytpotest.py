@@ -1,5 +1,6 @@
 from AES_good import AES
 from EC import *
+import os
 import random
 import hmac
 import hashlib
@@ -102,7 +103,13 @@ class Crypto:
 		return
     
 	def DHSendHost(self):
-		self.a = random.randint(1, LSEC.n)
+		#self.a = random.randint(1, LSEC.n)
+		randombytes = os.urandom(LSEC.n//16)
+		randomint = int.from_bytes(randombytes, byteorder = big, signed = False) % LSEC.n
+		if randomint < LSEC.n/2:
+			self.a = randomint. + LSEC/2
+		else:
+			self.a = randomint
 		self.KeySetup = True
 		return str(LSEC.G.Clone()*self.a) #send this to target
 
@@ -123,7 +130,13 @@ class Crypto:
 		return
 		
 	def DHSendUser(self):
-		self.b = random.randint(1,LSEC.n)
+		#self.b = random.randint(1,LSEC.n)
+		randombytes = os.urandom(LSEC.n//16)
+		randomint = int.from_bytes(randombytes, byteorder = big, signed = False) % LSEC.n
+		if randomint < LSEC.n/2:
+			self.b = randomint. + LSEC/2
+		else:
+			self.b = randomint
 		self.KeySetup = True
 		return str(LSEC.G.Clone()*self.b) #send this to host
 		
