@@ -1,9 +1,10 @@
 from AES_good import AES
 from EC import *
+import os
 import random
 import hmac
 import hashlib
-
+import math
 def compare_digest(x, y):
     if not (isinstance(x, bytes) and isinstance(y, bytes)):
         raise TypeError("both inputs should be instances of bytes")
@@ -55,51 +56,98 @@ class LSEC: #Locally Stored Elliptic Curve
 class Crypto:
 	def Crypto(self):
 		#do the initialisation
+		self.KeySetup = False
 		return
         
-	def KeyGen(self, KeyData):
+	def KeyGen(self, KeyData, isHost):
+
+		#transform the key from the diffie-Helman key exchange into bytes
+		KeyData = bytes(str(KeyData), 'utf-8')
+		#hash that bytestring using a key derrivation sheme
+		if isHost:
+			dk  = hashlib.pbkdf2_hmac('sha256', KeyData, b'keyhost',   100000, 16)
+			dk2 = hashlib.pbkdf2_hmac('sha256', KeyData, b'keyclient', 100000, 16)
+			
+			#generate IV
+			di  = hashlib.pbkdf2_hmac('sha256', KeyData, b'ivhost',   100000, 16)
+			di2 = hashlib.pbkdf2_hmac('sha256', KeyData, b'ivclient', 100000, 16)
+			
+			#hmac keys
+			dh  = hashlib.pbkdf2_hmac('sha256', KeyData, b'machost',   100000, 16)
+			dh2 = hashlib.pbkdf2_hmac('sha256', KeyData, b'macclient', 100000, 16)
+
+		else:
+			#generate keys
+			dk  = hashlib.pbkdf2_hmac('sha256', KeyData, b'keyclient', 100000, 16)
+			dk2 = hashlib.pbkdf2_hmac('sha256', KeyData, b'keyhost',   100000, 16)
+
+			#generate IV
+			di  = hashlib.pbkdf2_hmac('sha256', KeyData, b'ivclient', 100000, 16)
+			di2 = hashlib.pbkdf2_hmac('sha256', KeyData, b'ivhost',   100000, 16)
+			
+			#hmac keys
+			dh  = hashlib.pbkdf2_hmac('sha256', KeyData, b'macclient', 100000, 16)
+			dh2 = hashlib.pbkdf2_hmac('sha256', KeyData, b'machost',   100000, 16)
+
 		#do a Diffie-Helman key exchange	
 		key =  texttobytes('h?2Trq]k8$s;H,D+')
 		key2 = bytes('h?2Trq]k8$s;H,D+', 'utf-8')
 		iv = texttobytes('h?2Trq]k8$s;H,D+')
-		self.AES_enc = AES(key, iv)
-		self.AES_dec = AES(key, iv)
-		self.enc_hmac = hmac.new(key2, bytes('', 'utf-8'), hashlib.sha256)
-		self.dec_hmac = hmac.new(key2, bytes('', 'utf-8'), hashlib.sha256)
+
+		self.AES_enc = AES(dk,  di)
+		self.AES_dec = AES(dk2, di2)
+
+		self.enc_hmac = hmac.new(dh,  bytes('', 'utf-8'), hashlib.sha256)
+		self.dec_hmac = hmac.new(dh2, bytes('', 'utf-8'), hashlib.sha256)
+
 		return
     
 	def DHSendHost(self):
-		self.a = random.randint(1, LSEC.n)
+		#self.a = random.randint(1, LSEC.n)
+		randombytes = os.urandom(int(math.log(LSEC.n)//8)
+		randomint = int.from_bytes(randombytes, byteorder = big, signed = False) % LSEC.n
+		self.a = randomint
+		self.KeySetup = True
 		return str(LSEC.G.Clone()*self.a) #send this to target
 
 	def DHRecHost(self, UGmessage):
-		if UGmessage == "id":
-			RecPoint = Eenheid(LSEC.curve)
-		else:
-			prime = LSEC.p
-			x_ = int(UGmessage.split()[1])
-			x = FiniteFieldElem(prime, x_)
-			y_ = int(UGmessage.split()[3])
-			y = FiniteFieldElem(prime, y_)
-			RecPoint = Punt(LSEC.curve, x,y)
-		self.KeyGen(RecPoint * self.a)
+		if self.KeySetup:
+			if UGmessage == "id":
+				RecPoint = Eenheid(LSEC.curve)
+			else:
+				prime = LSEC.p
+				x_ = int(UGmessage.split()[1])
+				x = FiniteFieldElem(prime, x_)
+				y_ = int(UGmessage.split()[3])
+				y = FiniteFieldElem(prime, y_)
+				RecPoint = Punt(LSEC.curve, x,y)
+			self.KeyGen(RecPoint * self.a, True)
+			self.a = 0
+			self.KeySetup = False
 		return
 		
 	def DHSendUser(self):
-		self.b = random.randint(1,LSEC.n)
+		#self.b = random.randint(1,LSEC.n)
+		randombytes = os.urandom(int(math.log(LSEC.n)//8)
+		randomint = int.from_bytes(randombytes, byteorder = big, signed = False) % LSEC.n
+		self.b = randomint
+		self.KeySetup = True
 		return str(LSEC.G.Clone()*self.b) #send this to host
 		
 	def DHRecUser(self, HGmessage):
-		if HGmessage == "id":
-			RecPoint = Eenheid(LSEC.curve)
-		else:
-			prime = LSEC.p
-			x_ = int(HGmessage.split()[1])
-			x = FiniteFieldElem(prime, x_)
-			y_ = int(HGmessage.split()[3])
-			y = FiniteFieldElem(prime, y_)
-			RecPoint = Punt(LSEC.curve, x,y)
-		self.KeyGen(RecPoint * self.b)
+		if self.KeySetup:
+			if HGmessage == "id":
+				RecPoint = Eenheid(LSEC.curve)
+			else:
+				prime = LSEC.p
+				x_ = int(HGmessage.split()[1])
+				x = FiniteFieldElem(prime, x_)
+				y_ = int(HGmessage.split()[3])
+				y = FiniteFieldElem(prime, y_)
+				RecPoint = Punt(LSEC.curve, x,y)
+			self.KeyGen(RecPoint * self.b, False)
+			self.b = 0
+			self.KeySetup = False
 		return 
 	
 	def Encrypt(self, plaintext):
