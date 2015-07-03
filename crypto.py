@@ -103,10 +103,11 @@ class Crypto:
 		return
     
 	def DHSendHost(self):
-		#self.a = random.randint(1, LSEC.n)
-		randombytes = os.urandom(int(math.log(LSEC.n)//8)
-		randomint = int.from_bytes(randombytes, byteorder = big, signed = False) % LSEC.n
-		self.a = randomint
+		self.a = random.randint(1, LSEC.n)
+			#work for later does not work as of yet but is better
+			#randombytes = os.urandom(int(math.log(LSEC.n)//8)
+			#randomint = int.from_bytes(b'\x00\x10', byteorder='big', signed=False)# % LSEC.n
+			#self.a = randomint
 		self.KeySetup = True
 		return str(LSEC.G.Clone()*self.a) #send this to target
 
@@ -127,10 +128,11 @@ class Crypto:
 		return
 		
 	def DHSendUser(self):
-		#self.b = random.randint(1,LSEC.n)
-		randombytes = os.urandom(int(math.log(LSEC.n)//8)
-		randomint = int.from_bytes(randombytes, byteorder = big, signed = False) % LSEC.n
-		self.b = randomint
+		self.b = random.randint(1,LSEC.n)
+			#work for later does not work as of yet but is better
+			#randombytes = os.urandom(int(math.log(LSEC.n)//8)
+			#randomint = int.from_bytes(randombytes, byteorder='big', signed=False)# % LSEC.n
+			#self.b = randomint
 		self.KeySetup = True
 		return str(LSEC.G.Clone()*self.b) #send this to host
 		
