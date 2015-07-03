@@ -4,7 +4,7 @@ import os
 import random
 import hmac
 import hashlib
-
+import math
 def compare_digest(x, y):
     if not (isinstance(x, bytes) and isinstance(y, bytes)):
         raise TypeError("both inputs should be instances of bytes")
@@ -104,12 +104,9 @@ class Crypto:
     
 	def DHSendHost(self):
 		#self.a = random.randint(1, LSEC.n)
-		randombytes = os.urandom(LSEC.n//16)
+		randombytes = os.urandom(int(math.log(LSEC.n)//8)
 		randomint = int.from_bytes(randombytes, byteorder = big, signed = False) % LSEC.n
-		if randomint < LSEC.n/2:
-			self.a = randomint. + LSEC/2
-		else:
-			self.a = randomint
+		self.a = randomint
 		self.KeySetup = True
 		return str(LSEC.G.Clone()*self.a) #send this to target
 
@@ -131,12 +128,9 @@ class Crypto:
 		
 	def DHSendUser(self):
 		#self.b = random.randint(1,LSEC.n)
-		randombytes = os.urandom(LSEC.n//16)
+		randombytes = os.urandom(int(math.log(LSEC.n)//8)
 		randomint = int.from_bytes(randombytes, byteorder = big, signed = False) % LSEC.n
-		if randomint < LSEC.n/2:
-			self.b = randomint. + LSEC/2
-		else:
-			self.b = randomint
+		self.b = randomint
 		self.KeySetup = True
 		return str(LSEC.G.Clone()*self.b) #send this to host
 		
