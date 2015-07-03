@@ -18,17 +18,37 @@
 \usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{matrix}
+\documentclass{article}
+\usepackage[pdftex]{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[dutch]{babel}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage[T1]{fontenc}
+\usepackage{epstopdf}
+\usepackage{relsize}
+\newcommand{\zv}{\blacksquare}
+\newcommand{\wv}{\square}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\usepackage{float}
+\usepackage[caption = false]{subfig}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
 \begin{document}
 
 \title{Elliptische Kromme Diffie-Hellman}
 
-\author{R.L. Neuteboom (4006712) S.E.M.P. Franssen()\\
+\author{R.L. Neuteboom (4006712) S.E.M.P. Franssen(4035844)\\
 \small Universiteit Utrecht \normalsize}
 
 \date{\today}
 \maketitle
 \section{Inleiding}
-Tegenwoordig is het steeds belangrijker communicatie via het internet te versleutelen. Zelfs als informatie nietszeggend blijkt te zijn kunnen mensen die het onderscheppen veel daaruit opmaken. Voorbeeld hiervan heb ik gezien bij een gastcollege van het vak Databases, hier liet de gastspreker zien dat je op basis van geringe informatie over een persoon, vaak relatief eenvoudig een kleine groep mensen kan construeren die het zou kunnen zijn. Zover ik weet is het ook volledig legaal om die informatie af te tappen als het onversleuteld is.\\
+Tegenwoordig is het steeds belangrijker communicatie via het internet te versleutelen. Zelfs als informatie nietszeggend lijkt te zijn, kunnen mensen die de gegevens onderscheppen veel daaruit opmaken. Een voorbeeld hiervan heb ik gezien bij een gastcollege van het vak Databases, hier liet de gastspreker zien dat je op basis van geringe informatie over een persoon, vaak relatief eenvoudig een kleine groep mensen kan construeren die het zou kunnen zijn. Zolang er geen technische ingreep nodig is om bij de gegevens te komen, kun je in Nederland nog veel verkeer legaal afluisteren.\\
 Dit verslag gaat over hoe je het Diffie-Hellman protocol kunt gebruiken om versleutelde communicatie op te zetten. Voor dit protocol is een systeem nodig om in te werken. Het systeem dat we gebruiken zullen we doen met een eindige cyclische multiplicatieve groep, deze cre\"eren we met behulp van een elliptische kromme. Verder willen we het bericht ondertekenen, dit zodat de ontvanger weet dat het van ons komt, het kan namelijk zo zijn dat iemand anders contact probeert te zoeken met de ontvanger en valse berichten stuurt. Om af te sluiten gaan we in op hoe we deze technieken/algoritmen hebben ge\"implementeerd in python.
 \section{Diffie-Hellman protocol}
 Het Diffie-Hellman protocol is een protocol om een sleutel af te spreken die vervolgens gebruikt kan worden voor versleutelde communicatie. Het protocol berust op het feit dat een bepaalde bewerking, bijvoorbeeld multiplicatie in een bepaalde groep, niet makkelijk om te keren is.\\
