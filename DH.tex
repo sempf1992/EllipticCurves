@@ -28,35 +28,44 @@
 \date{\today}
 \maketitle
 \section{Inleiding}
-Tegenwoordig is het steeds belangrijker communicatie via het internet te versleutelen. Zelfs als informatie nietszeggend lijkt te zijn, kunnen mensen die de gegevens onderscheppen veel daaruit opmaken. Een voorbeeld hiervan heb ik gezien bij een gastcollege van het vak Databases, hier liet de gastspreker zien dat je op basis van geringe informatie over een persoon, vaak relatief eenvoudig een kleine groep mensen kan construeren die het zou kunnen zijn. Zolang er geen technische ingreep nodig is om bij de gegevens te komen, kun je in Nederland nog veel verkeer legaal afluisteren.\\
-Dit verslag gaat over hoe je het Diffie-Hellman protocol kunt gebruiken om versleutelde communicatie op te zetten. Voor dit protocol is een systeem nodig om in te werken. Het systeem dat we gebruiken zullen we doen met een eindige cyclische multiplicatieve groep, deze cre\"eren we met behulp van een elliptische kromme. Verder willen we het bericht ondertekenen, dit zodat de ontvanger weet dat het van ons komt, het kan namelijk zo zijn dat iemand anders contact probeert te zoeken met de ontvanger en valse berichten stuurt. Om af te sluiten gaan we in op hoe we deze technieken/algoritmen hebben ge\"implementeerd in python.
+Tegenwoordig is het steeds belangrijker om communicatie die via het internet wordt verspreid te versleutelen. Zelfs als informatie nietszeggend lijkt te zijn, kunnen mensen die de gegevens onderscheppen veel daaruit opmaken. Een voorbeeld hiervan heb ik gezien bij een gastcollege van het vak Databases. Hier liet de gastspreker zien dat je op basis van geringe informatie over \'e\'en persoon, vaak relatief eenvoudig uit een grote database een kleine groep kan aanwijzen waar die persoon zich in bevindt. Zolang er geen technische ingreep nodig is om bij de gegevens te komen, kun je in Nederland nog veel verkeer legaal afluisteren.(Pas deze regel aan naar hoe het wel klopt)\\
+In dit verslag wordt beschreven hoe je het Diffie-Hellman protocol kunt gebruiken om versleutelde communicatie op te zetten. Voor dit protocol is een systeem nodig om in te werken. Het systeem dat we gebruiken, zal bestaan uit een eindige cyclische multiplicatieve groep. We cre\"eren deze met behulp van een elliptische kromme. Verder willen we het bericht ondertekenen, dit zodat de ontvanger weet dat het van ons komt. Het kan namelijk zo zijn dat iemand anders contact probeert te zoeken met de ontvanger en valse berichten stuurt. Ten slotte gaan we in op hoe we deze technieken/algoritmen hebben ge\"implementeerd in Python.
 \section{Diffie-Hellman protocol}
-Het Diffie-Hellman protocol is een protocol om een sleutel af te spreken die vervolgens gebruikt kan worden voor versleutelde communicatie. Het protocol berust op het feit dat een bepaalde bewerking, bijvoorbeeld multiplicatie in een bepaalde groep, niet makkelijk om te keren is.\\
-Laten we het protocol beschrijven:\\
-In de Cryptografie is het standaard dat de bedoeling is dat een bericht van A, Alice, naar B, Bob, gaat zonder dat E, Eve, mee kan luisteren.
+Het Diffie-Hellman protocol is een manier om een sleutel af te spreken die vervolgens gebruikt kan worden voor versleutelde communicatie. De effectiviteit van het protocol is gebaseerd op het feit dat een bepaalde bewerking niet makkelijk om te keren is, bijvoorbeeld multiplicatie in een bepaalde groep.\\
+De bedoeling is dat een bericht van A naar B gestuurd kan worden, zonder dat anderen, E, die het bericht onderscheppen het kunnen begrijpen. Dit is het principe van Cyptografie. Binnen de Cryptografie is het standaard  dat A met Alice, B met Bob en de afluisteraar met Eve wordt aangeduid. Als ergens in de tekst het woord \emph{openbaar} wordt gebruikt, komt dat neer op dat ervan uit moet worden gegaan dat derden ook die informatie ontvangen en kunnen lezen.
+Het Difie-Hellman protocol gaat als volgt te werk:
 \begin{itemize}
-\item Alice en Bob bespreken openbaar het systeem dat ze gaan gebruiken om de sleutel van latere communicatie te bepalen, in dit verslag dus een bepaalde elliptische kromme en een punt hierop
-\item Alice en Bob bedenken afzonderlijk van elkaar een priv\'{e}sleutel
-\item Alice en Bob gebruiken de priv\'{e}sleutel op het punt van de elliptische kromme en sturen het resultaat naar elkaar op
-\item Vervolgens gebruiken beide hun priv\'{e}sleutel op het ontvangen bericht, Alice en Bob hebben nu een gedeeld geheim die ze kunnen gebruiken voor versleutelde communicatie.
+\item Alice en Bob communiceren in het openbaar, dus afluisterbaar, het systeem dat ze gaan gebruiken om de sleutel van latere communicatie te bepalen. In ons verhaal is dit door middel van Elliptische Krommen. Hierbij leggen Alice en Bob een kromme, een basispunt op die kromme vast en een priemgetal af.
+\item Alice en Bob bedenken afzonderlijk van elkaar een priv\'{e}sleutel.
+\item Alice en Bob vermenigvuldigen hun priv\'{e}sleutel met het punt van de elliptische kromme en sturen het resultaat naar elkaar op.
+\item Vervolgens vermenigvuldigen beiden hun priv\'{e}sleutel met het ontvangen punt. Alice en Bob hebben nu een gedeeld geheim (dat punt maal beide priv\'esleutels) die ze kunnen gebruiken voor versleutelde communicatie.
 \end{itemize}
-Naast elliptische krommen kan ook een ander medium worden gekozen, belangrijk is dat de volgorde van het toepassen van de priv\'{e}sleutels niet relevant is. Het protocol kan ook nog eens worden uitgebreid naar meer personen: elke persoon die je toevoegt moet dan de stappen hierboven doen, er moet dan meerdere malen een ronde komen van punten bewerken met versturen naar de anderen, dit op zo'n manier dat uiteindelijk voor iedereen het punt bekend is dat door alle priv\'{e}sleutels is bewerkt op de zijne na. Het gedeelde geheim is dan uiteraard het beginpunt met alle priv\'{e}sleutels daarop toegepast.\\
-We gaan ervan uit dat Eve alle communicatie onderschept en precies weet wat ze aan het doen zijn, het enige van dit verhaal wat zij niet weet zijn de priv\'{e}sleutels en het gedeelde geheim.
+Naast elliptische krommen kan ook iets anders worden  gekozen. Zolang het iets is waarop je een bewerking kan doen die moeilijk om te keren is en dat het een commutatieve bewerking is.\\
+Het protocol kan ook nog eens worden uitgebreid naar meer personen. Dit uitgebreide protocol werkt als volgt: elk van de personen kiest een priv\'esleutel. 
+Het geheim wordt het basispunt maal \emph{alle} priv\'esleutels. Vervolgens wordt er heen en weer gecommuniceerd en krijgt ieder het basispunt maal alle priv\'esleutels, uitgezonderd de zijne te weten. Op deze manier is het nog steeds zo dat afluisteraars alleen maar weten wat het punt maal een aantal, maar niet alle, priv\'esleutels is.  
+We gaan ervan uit dat Eve alle communicatie onderschept en precies weet wat we aan het doen zijn. Het enige van dit verhaal wat zij niet weet zijn de priv\'{e}sleutels en het gedeelde geheim.
 Het is voor Eve genoeg om achter \'{e}\'{e}n van de priv\'{e}sleutels te komen, met deze kan ze namelijk achter het gedeelde geheim komen. De veiligheid van het systeem hangt dus af hoe moeilijk het is om gegeven het punt en het punt bewerkt met een van de priv\'{e}sleutels erachter te komen wat de priv\'{e}sleutel is.\\
 Omdat we werken in een eindige groep waarbij er voor het omkeren van de bewerking geen algortime is, hangt de moeilijkheidsgraad van het oplossen van dat probleem af van de orde van de groep.
 
 \section{Elliptische Krommen}
-Elliptische Krommen kunnen gebruikt worden voor het Diffie-Hellman protocol, voordat we laten zien dat je dat kan gebruiken is het gepast te te bespreken wat elliptische krommen zijn.
+Het Diffie-Hellman protocol kan gebruik maken van Elliptische Krommen. Voor we bespreken hoe dat kan, stellen we vast wat Elliptische Krommen zijn. \\
 Een elliptische kromme is een kromme die beschreven kan worden met punten $(x,y)\in\mathbb{R}^2$ die voldoen aan:
 \begin{equation}
 y^2 = x^3 + ax +b.
 \end{equation}
-Voorwaarde hierbij is dat dat de beschreven grafiek niet singulier is, de definitie van singulier hangt af van het type grafiek dat bestudeerd wordt.
-Hier komt dat neer op dat de grafiek geen zelf-intersecties, aaneengesloten en we moeten met behulp van een bijectieve parametrisatie $p:\mathbb{R} \to \textbf{E}$ de curve kunnen doorlopen waarbij we overal de afgeleide kunnen bepalen en ongelijk aan nul zijn. Op zo'n grafiek zijn we vooral ge\"interesseerd in punten $(x,y)\in \mathbb{Z}^2$, we moeten daarom ook eisen dat $(a,b)\in\mathbb{Z}$. Reden hiervoor is dat we met de net besproken grafiek een eindige groep maken. We defini\"eren de groep $G$ dan op de volgende manier, een punt op de grafiek met gehele $x$ en $y$ is een element van onze groep. Het eenheidselement, aan te geven met $\infty$ is een punt dat niet op de grafiek ligt, je zou het kunnen zien als het toegevoegde punt voor one-point-compactification. De groepsoperatie '$+$' op punten $A$ en $B$ is op de volgende manier gedefinieerd: \\
-je trekt een lijn door $A$ en $B$, laat $C$ het andere snijpunt met de grafiek zijn. Spiegel $C$ in de $x$-as en het resultaat is $A+B$.\\
-Hier zitten uiteraard nog haken en ogen aan, hoe gaan we om met optellen met $\infty$ en is er wel altijd precies  \'{e}\'{e}n ander snijpunt? Aangezien we $\infty$ als eenheidselement hebben gedefini\'{e}erd nemen we gewoon het punt waarbij het wordt opgeteld als resultaat. Verder als de je een punt $A$ bij zijn $x$-as spiegeling optelt krijg je geen ander snijpunt, we noemen dan ook zijn $x$-as spiegeling $-A$ en nemen $A + -A=A -A=\infty$. Het enige wat nog laten zien moet worden is dat als je een andere combinatie van punten optelt dat er dus daadwerkelijk een derde snijpunt gevonden kan worden.(CANT REMEMBER SHIT, denk een van die webpagina's)
+Om een bruikbare Elliptische Kromme te hebben moeten we de voorwaarde stellen dat zijn grafiek non-singulier is. De definitie van singulier hangt af van het type grafiek wat bestudeerd wordt. Voor dit type grafiek betekent singulier dat de grafiek voldoet aan de volgende eisen:
+\begin{itemize}
+\item De grafiek heeft geen zelfintersecties.
+\item De punten van de grafiek: $E$ moet beschreven kunnen worden met een bijectieve parametrisatie, oftwel $\exists p \in C(R\to E)$ bijectief.
+\item De parametrisatie moet de afgeleide overal gedefinieerd zijn en ongelijk aan nul. 
+\end{itemize}
+Op de grafiek van een elliptische kromme zijn we ge\"interesseerd in punten $(x,y)\in \mathbb{Z}^2$. Om te zorgen dat de kromme daar ook punten in heeft, eisen we dat $(a,b)\in\mathbb{Z}$. Reden hiervoor is dat we met de net besproken grafiek een eindige groep maken. We defini\"eren de groep $G$ dan op de volgende manier, een punt op de grafiek met gehele $x$ en $y$ is een element van onze groep. Het eenheidselement, aan te geven met $\infty$, is echter een punt dat niet op de grafiek ligt. Je zou het punt $\infty$ kunnen zien als het toegevoegde punt voor one-point-compactification.(Dat klopt toch?) De groepsoperatie '$+$' op punten $A$ en $B$ is op de volgende manier gedefinieerd: \\
+we trekken een lijn door $A$ en $B$, laat $C$ het andere snijpunt met de grafiek zijn. We spiegelen $C$ in de $x$-as en het resultaat is $A+B$.(VOEG PLAATJE TOE HIERVOOR)\\
+Hier zitten uiteraard nog haken en ogen aan. Hoe gaan we om met optellen met $\infty$? Is er wel altijd precies  \'{e}\'{e}n ander snijpunt? Aangezien we $\infty$ als eenheidselement hebben gedefini\'{e}erd, nemen we het punt waarbij $\infty$ wordt opgeteld als resultaat. Vervolgens als we een punt $A$ bij zijn $x$-as spiegeling optellen defini\"eren we dat daar $\infty$ uit komt. Als gevolg hiervan noemen we de $x$-as spiegeling van $A$, $-A$.\\
+Als laatste wat we moeten laten zien is dat uit gezonderd van $A + -A$ dat er in het algoritme er daadwerkelijk een derde snijpunt is. (VOEG HIER DIE BESCHRIJVING VAN DE WEBPAGINA TOE)
+\newpage
 \subsection{Eindig maken}
-Zoals we eerder vermeld hadden willen we een \emph{eindige} groep hebben, dat is de groep hierboven besproken zeerzeker niet of hij bevat alleen $\infty$ wat ook niet nuttig is. De manier waarop we dat doen is de waarden van $x$ en $y$ beperken tot een eindig veld, waarbij alleen gehele getallen zitten. Een eindig veld is een verzameling met daarbij een multiplicatie, additie, subtractie en divisie.\\
+Zoals we eerder vermeld hadden willen we een \emph{eindige} groep hebben, dat is de groep hierboven besproken niet of hij bevat alleen $\infty$ wat ook niet nuttig is. De manier waarop we dat doen is de waarden van $x$ en $y$ beperken tot een eindig veld, waarbij alleen gehele getallen zitten. Een eindig veld is een verzameling met daarbij een multiplicatie, additie, subtractie en divisie.\\
 Een eindig veld $F$ heeft de volgende eisen:
 \begin{itemize}
 \item $F$ moet gesloten zijn in de multiplicatie en additie, d.w.z. als je twee elementen van $F$ optelt of vermenigvuldigt is dit weer een element van $F$.
@@ -112,9 +121,9 @@ Dit bestand zorgt ervoor dat tekst versleuteld kan worden d.m.v. AES. Als begin 
 Dit bestand bevat de klasse LSEC, wat defini\"eert op welke kromme en eindig lichaam we werken  en de klasse crypto.
 De klasse crypto gebruikt zowel AES.py als EC.py, de laatste hiervan om een sleutel af te spreken. AES om de versleuteling van de berichten te doen. Na de versleuteling worden de berichten ondertekend met een HMAC gebaseerd op SHA256. Er is gekozen voor encrypt then sign omdat deze methode veel minder gevoelig is voor side channel aanvallen, en dezelfde theoretische veiligheid bied. \\Verder wordt in Crypto.py verzorgd dat als er een gemeenschappelijke sleutel is afgesproken er via herhaald hashen via pbkdf2 hmac veilige sleutels en IVs worden verzorgd voor de upstream en downstream van gegevens, de IV voor die streams en de sleutels om die streams te ondertekenen met behulp van HMAC.
 \subsubsection{tcp.py}
-tcp.py is de python file met daarin de server code. Deze houdt alle users bij met hun keys, en als er een bericht binnenkomt dan stuurt de server dit bericht door naar alle andere users van de server. De server gebruikt crypto.py om de berichten te versleutelen en met de clients keys af te spreken.
+tcp.py is de Python file met daarin de server code. Deze houdt alle users bij met hun keys, en als er een bericht binnenkomt dan stuurt de server dit bericht door naar alle andere users van de server. De server gebruikt crypto.py om de berichten te versleutelen en met de clients keys af te spreken.
 \subsubsection{telnet.py}
-De python file telnet.py is de file  voor de client en zorgt hij verbinding kan leggen met de server en kunnen communiceren. De client heeft in tegen stelling tot de server geen verbinding met alle gebruikers van de server maar alleen met de server zelf. 
+De Python file telnet.py is de file  voor de client en zorgt hij verbinding kan leggen met de server en kunnen communiceren. De client heeft in tegen stelling tot de server geen verbinding met alle gebruikers van de server maar alleen met de server zelf. 
 
 
 \section{Aanvallen}
@@ -133,5 +142,5 @@ We hebben in dit project een applicatie geschreven waarbij men redelijk veilig k
 \section{gebruikte bronnen}
 http://www.binarytides.com/code-chat-application-server-client-sockets-python/\\
 https://github.com/bozhu/AES-Python\\
-en andere eventuele bronnen vermeld in de python3 bestanden.
+en andere eventuele bronnen vermeld in de Python3 bestanden.
 \end{document}
