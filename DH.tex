@@ -40,7 +40,7 @@ Het Difie-Hellman protocol gaat als volgt te werk:
 \item Alice en Bob vermenigvuldigen hun priv\'{e}sleutel met het punt van de elliptische kromme en sturen het resultaat naar elkaar op.
 \item Vervolgens vermenigvuldigen beiden hun priv\'{e}sleutel met het ontvangen punt. Alice en Bob hebben nu een gedeeld geheim (dat punt maal beide priv\'esleutels) die ze kunnen gebruiken voor versleutelde communicatie.
 \end{itemize}
-Naast elliptische krommen kan ook iets anders worden  gekozen. Zolang het iets is waarop je een bewerking kan doen die moeilijk om te keren is en dat het een commutatieve bewerking is.\\
+Naast elliptische krommen kan ook iets anders worden  gekozen. Zolang het iets is waarop je een bewerking kan doen die moeilijk om te keren is en dat het een associatieve commutatieve bewerking is.\\
 Het protocol kan ook nog eens worden uitgebreid naar meer personen. Dit uitgebreide protocol werkt als volgt: elk van de personen kiest een priv\'esleutel. 
 Het geheim wordt het basispunt maal \emph{alle} priv\'esleutels. Vervolgens wordt er heen en weer gecommuniceerd en krijgt ieder het basispunt maal alle priv\'esleutels, uitgezonderd de zijne te weten. Op deze manier is het nog steeds zo dat afluisteraars alleen maar weten wat het punt maal een aantal, maar niet alle, priv\'esleutels is.  
 We gaan ervan uit dat Eve alle communicatie onderschept en precies weet wat we aan het doen zijn. Het enige van dit verhaal wat zij niet weet zijn de priv\'{e}sleutels en het gedeelde geheim.
@@ -56,26 +56,49 @@ y^2 = x^3 + ax +b.
 Om een bruikbare Elliptische Kromme te hebben moeten we de voorwaarde stellen dat zijn grafiek non-singulier is. De definitie van singulier hangt af van het type grafiek wat bestudeerd wordt. Voor dit type grafiek betekent singulier dat de grafiek voldoet aan de volgende eisen:
 \begin{itemize}
 \item De grafiek heeft geen zelfintersecties.
-\item De punten van de grafiek: $E$ moet beschreven kunnen worden met een bijectieve parametrisatie, oftwel $\exists p \in C(R\to E)$ bijectief.
+\item De punten van de grafiek: $E$ moet beschreven kunnen worden met een bijectieve parametrisatie, oftwel $\exists p \in C(\mathbb{R},E)$ bijectief.
 \item De parametrisatie moet de afgeleide overal gedefinieerd zijn en ongelijk aan nul. 
 \end{itemize}
 Op de grafiek van een elliptische kromme zijn we ge\"interesseerd in punten $(x,y)\in \mathbb{Z}^2$. Om te zorgen dat de kromme daar ook punten in heeft, eisen we dat $(a,b)\in\mathbb{Z}$. Reden hiervoor is dat we met de net besproken grafiek een eindige groep maken. We defini\"eren de groep $G$ dan op de volgende manier, een punt op de grafiek met gehele $x$ en $y$ is een element van onze groep. Het eenheidselement, aan te geven met $\infty$, is echter een punt dat niet op de grafiek ligt. Je zou het punt $\infty$ kunnen zien als het toegevoegde punt voor one-point-compactification.(Dat klopt toch?) De groepsoperatie '$+$' op punten $A$ en $B$ is op de volgende manier gedefinieerd: \\
-we trekken een lijn door $A$ en $B$, laat $C$ het andere snijpunt met de grafiek zijn. We spiegelen $C$ in de $x$-as en het resultaat is $A+B$.(VOEG PLAATJE TOE HIERVOOR)\\
-Hier zitten uiteraard nog haken en ogen aan. Hoe gaan we om met optellen met $\infty$? Is er wel altijd precies  \'{e}\'{e}n ander snijpunt? Aangezien we $\infty$ als eenheidselement hebben gedefini\'{e}erd, nemen we het punt waarbij $\infty$ wordt opgeteld als resultaat. Vervolgens als we een punt $A$ bij zijn $x$-as spiegeling optellen defini\"eren we dat daar $\infty$ uit komt. Als gevolg hiervan noemen we de $x$-as spiegeling van $A$, $-A$.\\
-Als laatste wat we moeten laten zien is dat uit gezonderd van $A + -A$ dat er in het algoritme er daadwerkelijk een derde snijpunt is. (VOEG HIER DIE BESCHRIJVING VAN DE WEBPAGINA TOE)
-\newpage
-\subsection{Eindig maken}
-Zoals we eerder vermeld hadden willen we een \emph{eindige} groep hebben, dat is de groep hierboven besproken niet of hij bevat alleen $\infty$ wat ook niet nuttig is. De manier waarop we dat doen is de waarden van $x$ en $y$ beperken tot een eindig veld, waarbij alleen gehele getallen zitten. Een eindig veld is een verzameling met daarbij een multiplicatie, additie, subtractie en divisie.\\
-Een eindig veld $F$ heeft de volgende eisen:
+we trekken een lijn door $A$ en $B$, laat $C$ het andere snijpunt met de grafiek zijn. We spiegelen $C$ in de $x$-as en het resultaat is $A+B$. Zie ook figuur \ref{optellen}.\\
+\begin{figure}[H]
+\center
+\includegraphics[scale=0.3]{add-points-example.png}
+\caption{Optelling van punten op Elliptische Krommen, bron jeremykunblabla.}\label{optellen}
+\end{figure}
+Er zijn hierbij een aantal zaken nog onbesproken. Een punt bij zichzelf optellen is niet goed gedefinieerd met de definitie van daarnet, we defini\"eren de lijn met de raaklijn en dan werkt het wel. Dat die raaklijn een snijpunt heeft met de curve zou aangetoond kunnen worden met de stelling van B\'ezout (BRON jeremykunblablabl).\\
+De stelling van B\'ezout gaat over het aantal gemeenschappelijke punten van twee algebra\"ische krommen. De stelling komt uit de algebra\"ische meetkunde, hier zijn wij echter te onbekend mee om deze stelling en het bijbehorende bewijs in dit verslag te verwerken. \\
+Als we een punt bij zijn x-as spiegeling optellen is er geen derde punt op de kromme, we defini\"eren dat in de x-as spiegelen neer komt op vermenigvuldigen met $-1$ en uit die optelling komt dan ook $\infty$. \\
+Iets wat in het vorige hoofdstuk genoemd was maar nog niet aangetoond is dat de optelling associatief en commutatief moet zijn. Dat de optelling van punten op de elliptische kromme commutatief is, is snel te zien als je naar de definitie kijkt van de optelling. Om te laten zien dat de optelling associatief is moet ook de stelling van B\'ezout worden gebruikt helaas moeten we het bewijs hiervan ook achterwege laten.
+\subsection{Eindige velden}
+Zoals we eerder vermeld hadden willen we een \emph{eindige} groep hebben, dat is de groep hierboven besproken niet of hij bevat alleen $\infty$ wat ook niet nuttig is. De manier waarop we dat doen is de waarden van $x$ en $y$ beperken tot een eindig lichaam, waarbij alleen gehele getallen zitten. Een lichaam is een verzameling met daarbij een multiplicatie, additie, subtractie en divisie.\\
+Een eindig lichaam $F$ heeft de volgende eisen:
 \begin{itemize}
 \item $F$ moet gesloten zijn in de multiplicatie en additie, d.w.z. als je twee elementen van $F$ optelt of vermenigvuldigt is dit weer een element van $F$.
 \item er is associativiteit van optelling en vermenigvuldiging: $\forall a,b\in F$ geldt $a +(b + c)= (a + b) + c$ en $(a \cdot b) \cdot c = a \cdot (b \cdot c)$.
 \item commutativiteit van optelling en vermenigvuldiging: $\forall a,b\in F$ geldt $a + b= b + a$ en $a \cdot b = b \cdot a$.
 \item er zijn eenheidselementen van optelling en vermenigvuldiging: $e_+, e_*$.
 \item er zijn additieve en multiplicatieve inversen: $\forall a \in F, \exists a^{-1}_+,a^{-1}_*\in F$ zodanig dat $a + a^{-1}_+=e_+$ en $a \cdot a^{-1}_* = e_*$.
-\item distributiviteit van vermenigvuldiging over optelling: $\forall a,b,c \in F$ geldt $a \cdot (b + c) = (a \cdot b) + (a \cdot c)$.
+\item distributiviteit van vermenigvuldiging over optelling: $\forall a,b,c \in F$ geldt $a \cdot (b + c) = (a \cdot b) + (a \cdot c)$ en $(a+b)\cdot c = (a \cdot c) + (b \cdot c)$.
 \end{itemize}
-Het veld waar wat we gaan gebruiken is $\mathbb{F}_p$ dit is het veld, waarbij de gehele getallen in restklassen modulo $p$ elementen zijn van het veld. Gegeven dat $p$ priem is voldoet $\mathbb{F}_p$ aan de eisen. Wat verder nog op te merken valt is dat we hieruit ook geheeltallige machtsverheffing kunnen gebruiken.
+Het lcihaam dat wat we gaan gebruiken is $\mathbb{F}_p$, ook wel $\mathbb{Z}/p$. Ofwel de gehele getallen modulo $p$. Gegeven dat $p$ priem is voldoet $\mathbb{F}_p$ aan de eisen. Wat verder nog op te merken valt is dat we hierop ook geheeltallige machtsverheffing kunnen uitvoeren.
+\subsection{Samenvoegen Elliptische Kromme met eindig veld}
+De manier waarop we deze begrippen samenvoegen is door de normale groep van de Elliptische Krommen te gebruiken met \'e\'en verschil: $x$ en $y$ worden met hun respresentant (kleinste positieve waarde) uit de equivalentieklasse uitgedrukt. Het lijkt misschien gek dat dit kan, maar als we formules hebben die de rol overnemen van de lijnen trekken maakt het daarbij niet uit of we in een eindig lichaam of in de gehele getallen werken.\\
+Dan moeten we uiteraard wel formules hebben.
+Laten we eerst proberen een formule te construeren die ervoor zorgt dat we twee verschillende punten bij elkaar op kunnen tellen.
+Stel we tellen $(x_A,y_A)$ bij $(x_B,y_B)$ op, met als $x_A=x_B$ dan $y_B\neq -y_A,y_A$. We moeten een lijn trekken, dat is de volgende lijn:
+\begin{equation}
+L(x) = \frac{y_A - y_B}{x_A - x_B} (x - x_B) + y_b 
+\end{equation}
+Om aan het andere snijpunt te komen hoeven we alleen maar de andere wortel van de volgende vergelijking te vinden:
+\begin{equation}
+(L(x))^2 = x^3 + ax + b 
+\end{equation}
+Omdat we de twee andere wortels al hebben kunnen we dit gemakkelijk oplossen met Vieta's formule.
+Volgens die formule geldt het volgende:\\
+Als je een polynoom van de vorm $$\sum_{k=0}^n a_kx^k$$ hebt, geldt als $\{x_1,x_2,...,x_n\}$ de wortels van die polynoom zijn (inclusief dubbele): $$\sum_{k=1}^n x_n =-\frac{a_{n-1}}{a_n}.$$
+Ofwel bij deze formule hoeven we alleen nog maar de co\"efficient van $x^2$ te vinden. Als we dit uitwerken hebben we $$a_2 = (\frac{y_A - y_B}{x_A - x_B})^2$$ dus $$x_C = (\frac{y_A - y_B}{x_A - x_B})^2 - x_A - x_B.$$ De bijbehorende $y_C$ krijgen we door hem in te vullen: $$y_C= \frac{y_A - y_B}{x_A - x_B} (((\frac{y_A - y_B}{x_A - x_B})^2 - x_A - x_B) - x_B) + y_b $$
+(TODO zelfde maar met afgeleide)
 
 \section{Ondertekenen}
 Voor het ondertekenen van de berichten gebruiken we een HMAC (Hash-based Message Authentication Code). Voor HMAC is een cryptografisch veilige hash-functie nodig, hiervoor gebruiken we SHA256. Anders dan bij gebruikelijke hashfuncties zijn deze gemaakt op zo'n manier dat het erg moeilijk is om twee inputs te vinden die dezelfde output geven, daarnaast moet de input niet te achterhalen zijn. De input die wij gebruiken is de versleutelde tekst. 
@@ -142,5 +165,6 @@ We hebben in dit project een applicatie geschreven waarbij men redelijk veilig k
 \section{gebruikte bronnen}
 http://www.binarytides.com/code-chat-application-server-client-sockets-python/\\
 https://github.com/bozhu/AES-Python\\
+Weisstein, Eric W. "Field Axioms." From MathWorld--A Wolfram Web Resource.\\ http://mathworld.wolfram.com/FieldAxioms.html \\
 en andere eventuele bronnen vermeld in de Python3 bestanden.
 \end{document}
