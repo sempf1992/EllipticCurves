@@ -97,9 +97,27 @@ Om aan het andere snijpunt te komen hoeven we alleen maar de andere wortel van d
 Omdat we de twee andere wortels al hebben kunnen we dit gemakkelijk oplossen met Vieta's formule.
 Volgens die formule geldt het volgende:\\
 Als je een polynoom van de vorm $$\sum_{k=0}^n a_kx^k$$ hebt, geldt als $\{x_1,x_2,...,x_n\}$ de wortels van die polynoom zijn (inclusief dubbele): $$\sum_{k=1}^n x_n =-\frac{a_{n-1}}{a_n}.$$
-Ofwel bij deze formule hoeven we alleen nog maar de co\"efficient van $x^2$ te vinden. Als we dit uitwerken hebben we $$a_2 = (\frac{y_A - y_B}{x_A - x_B})^2$$ dus $$x_C = (\frac{y_A - y_B}{x_A - x_B})^2 - x_A - x_B.$$ De bijbehorende $y_C$ krijgen we door hem in te vullen: $$y_C= \frac{y_A - y_B}{x_A - x_B} (((\frac{y_A - y_B}{x_A - x_B})^2 - x_A - x_B) - x_B) + y_b $$
-(TODO zelfde maar met afgeleide)
-
+Ofwel bij deze formule hoeven we alleen nog maar de co\"efficient van $x^2$ te vinden. Als we dit uitwerken hebben we $$a_2 = (\frac{y_A - y_B}{x_A - x_B})^2$$ dus $$x_C = (\frac{y_A - y_B}{x_A - x_B})^2 - x_A - x_B.$$ De bijbehorende $y_C$ krijgen we door hem in te vullen: $$y_C= \frac{y_A - y_B}{x_A - x_B} (x_C - x_B) + y_b$$
+Laten we nu het snijpunt gaan vinden als we een punt bij zichzelf optellen.
+Eerst moeten we de helling van de elliptische kromme in ons punt vinden. Dit kunnen we voor elkaar krijgen door impliciete differentiatie:\\
+We nemen de afgeleide naar $x$ aan beide kanten van onze vergelijking van de elliptische kromme.
+\begin{equation}
+\frac{\partial}{\partial x}(y^2) = \frac{\partial}{\partial x}(x^3 + ax + b).
+\end{equation}
+Dit is hetzelfde als:
+\begin{equation}
+\frac{\partial y^2}{\partial y} \cdot \frac{\partial y}{\partial x} = 2y \cdot \frac{\partial y}{\partial x}=3x^2 +a.
+\end{equation}
+Nu hebben we dat:
+\begin{equation}
+\frac{\partial y}{\partial x} = \frac{3x^2 +a}{2y}.
+\end{equation}
+Resultaat is dat we nu de vergelijking voor de beschreven lijn hebben, gegeven we het punt $(x_A,y_A)$ bij zichzelf optellen hebben we:
+$$L(x) = \frac{3x^2 +a}{2y}(x - x_A) + y_A.$$
+Met hetzelfde proces, dus ook het toepassen van Vieta's formule krijgen we:
+$$
+x_B = (\frac{3x^2 +a}{2y}(x - x_A))^2 - 2x_A \textit{ en } y_B  = \frac{3x^2 +a}{2y}(x_B - x_A) + y_A.
+$$
 \section{Ondertekenen}
 Voor het ondertekenen van de berichten gebruiken we een HMAC (Hash-based Message Authentication Code). Voor HMAC is een cryptografisch veilige hash-functie nodig, hiervoor gebruiken we SHA256. Anders dan bij gebruikelijke hashfuncties zijn deze gemaakt op zo'n manier dat het erg moeilijk is om twee inputs te vinden die dezelfde output geven, daarnaast moet de input niet te achterhalen zijn. De input die wij gebruiken is de versleutelde tekst. 
 \section{Implementatie: chat applicatie}
