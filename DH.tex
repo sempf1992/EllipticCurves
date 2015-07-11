@@ -66,41 +66,41 @@ we trekken een lijn door $A$ en $B$, laat $C$ het andere snijpunt met de grafiek
 \includegraphics[scale=0.3]{add-points-example.png}
 \caption{Optelling van punten op Elliptische Krommen, bron jeremykunblabla.}\label{optellen}
 \end{figure}
-Er zijn hierbij een aantal zaken nog onbesproken. Een punt bij zichzelf optellen is niet goed gedefinieerd met de definitie van daarnet, we defini\"eren de lijn met de raaklijn en dan werkt het wel. Dat die raaklijn een snijpunt heeft met de curve zou aangetoond kunnen worden met de stelling van B\'ezout (BRON jeremykunblablabl).\\
-De stelling van B\'ezout gaat over het aantal gemeenschappelijke punten van twee algebra\"ische krommen. De stelling komt uit de algebra\"ische meetkunde, hier zijn wij echter te onbekend mee om deze stelling en het bijbehorende bewijs in dit verslag te verwerken. \\
-Als we een punt bij zijn x-as spiegeling optellen is er geen derde punt op de kromme, we defini\"eren dat in de x-as spiegelen neer komt op vermenigvuldigen met $-1$ en uit die optelling komt dan ook $\infty$. \\
-Iets wat in het vorige hoofdstuk genoemd was maar nog niet aangetoond is dat de optelling associatief en commutatief moet zijn. Dat de optelling van punten op de elliptische kromme commutatief is, is snel te zien als je naar de definitie kijkt van de optelling. Om te laten zien dat de optelling associatief is moet ook de stelling van B\'ezout worden gebruikt helaas moeten we het bewijs hiervan ook achterwege laten.
+Er zijn hierbij een aantal zaken nog onbesproken. Een punt bij zichzelf optellen is niet goed gedefinieerd met de definitie van daarnet. We defini\"eren de lijn met de raaklijn en dan werkt het wel. Dat die raaklijn een snijpunt heeft met de curve zou aangetoond kunnen worden met de stelling van B\'ezout (BRON jeremykunblablabl).\\
+De stelling van B\'ezout gaat over het aantal gemeenschappelijke punten van twee algebra\"ische krommen. De stelling komt uit de algebra\"ische meetkunde. Wij zijn echter te weinig bekend met dit wiskundig gebied om deze stelling en het bijbehorende bewijs in dit verslag te kunnen verwerken. \\
+Als we een punt bij zijn x-as spiegeling optellen is er geen derde punt op de kromme. We defini\"eren dat in de x-as spiegelen neer komt op vermenigvuldigen met $-1$ en uit de optelling met zijn inverse komt dan ook $\infty$. \\
+Iets wat in het vorige hoofdstuk vermeld is maar nog niet aangetoond wordt, is dat de optelling associatief en commutatief moet zijn. Dat de optelling van punten op de elliptische kromme commutatief is, kunnen we direct uit de definitie halen van de optelling. Om te laten zien dat de optelling associatief is, moet ook de stelling van B\'ezout gebruikt worden. Om die reden moeten wij helaas ook dit bewijs achterwege laten.
 \subsection{Eindige velden}
-Zoals we eerder vermeld hadden willen we een \emph{eindige} groep hebben, dat is de groep hierboven besproken niet of hij bevat alleen $\infty$ wat ook niet nuttig is. De manier waarop we dat doen is de waarden van $x$ en $y$ beperken tot een eindig lichaam, waarbij alleen gehele getallen zitten. Een lichaam is een verzameling met daarbij een multiplicatie, additie, subtractie en divisie.\\
-Een eindig lichaam $F$ heeft de volgende eisen:
+Zoals we eerder vermeld hebben, willen we een \emph{eindige} groep hebben. De hierboven besproken groep is dat niet of hij bevat alleen $\infty$, wat ook niet nuttig is. De manier waarop we dat doen is de waarden van $x$ en $y$ beperken tot een eindig lichaam, waarin alleen gehele getallen zitten. Een lichaam is een verzameling met daarbij een multiplicatie, additie, subtractie en divisie.\\
+Een eindig lichaam $F$ voldoet de volgende eisen:
 \begin{itemize}
-\item $F$ moet gesloten zijn in de multiplicatie en additie, d.w.z. als je twee elementen van $F$ optelt of vermenigvuldigt is dit weer een element van $F$.
+\item $F$ moet gesloten zijn onder multiplicatie en additie, d.w.z. als je twee elementen van $F$ optelt of vermenigvuldigt is dit weer een element van $F$.
 \item er is associativiteit van optelling en vermenigvuldiging: $\forall a,b\in F$ geldt $a +(b + c)= (a + b) + c$ en $(a \cdot b) \cdot c = a \cdot (b \cdot c)$.
 \item commutativiteit van optelling en vermenigvuldiging: $\forall a,b\in F$ geldt $a + b= b + a$ en $a \cdot b = b \cdot a$.
 \item er zijn eenheidselementen van optelling en vermenigvuldiging: $e_+, e_*$.
 \item er zijn additieve en multiplicatieve inversen: $\forall a \in F, \exists a^{-1}_+,a^{-1}_*\in F$ zodanig dat $a + a^{-1}_+=e_+$ en $a \cdot a^{-1}_* = e_*$.
 \item distributiviteit van vermenigvuldiging over optelling: $\forall a,b,c \in F$ geldt $a \cdot (b + c) = (a \cdot b) + (a \cdot c)$ en $(a+b)\cdot c = (a \cdot c) + (b \cdot c)$.
 \end{itemize}
-Het lcihaam dat wat we gaan gebruiken is $\mathbb{F}_p$, ook wel $\mathbb{Z}/p$. Ofwel de gehele getallen modulo $p$. Gegeven dat $p$ priem is voldoet $\mathbb{F}_p$ aan de eisen. Wat verder nog op te merken valt is dat we hierop ook geheeltallige machtsverheffing kunnen uitvoeren.
+Het lichaam dat wat we gaan gebruiken is $\mathbb{F}_p$, ook wel $\mathbb{Z}/p$. Ofwel de gehele getallen modulo $p$. Gegeven dat $p$ priem is voldoet $\mathbb{F}_p$ aan de eisen. Wat verder nog op te merken valt is dat we hierop ook geheeltallige machtsverheffing kunnen uitvoeren.
 \subsection{Samenvoegen Elliptische Kromme met eindig veld}
-De manier waarop we deze begrippen samenvoegen is door de normale groep van de Elliptische Krommen te gebruiken met \'e\'en verschil: $x$ en $y$ worden met hun respresentant (kleinste positieve waarde) uit de equivalentieklasse uitgedrukt. Het lijkt misschien gek dat dit kan, maar als we formules hebben die de rol overnemen van de lijnen trekken maakt het daarbij niet uit of we in een eindig lichaam of in de gehele getallen werken.\\
+De manier waarop we deze begrippen samenvoegen is door de groep van de Elliptische Krommen te gebruiken met \'e\'en verschil: $x$ en $y$ worden met hun respresentant (kleinste positieve waarde) uit de equivalentieklasse uitgedrukt. Het lijkt misschien gek dat dit kan, maar als we formules hebben die de rol overnemen van de lijnen trekken, maakt het daarbij niet uit of we in een eindig lichaam of in de gehele getallen werken.\\
 Dan moeten we uiteraard wel formules hebben.
-Laten we eerst proberen een formule te construeren die ervoor zorgt dat we twee verschillende punten bij elkaar op kunnen tellen.
-Stel we tellen $(x_A,y_A)$ bij $(x_B,y_B)$ op, met als $x_A=x_B$ dan $y_B\neq -y_A,y_A$. We moeten een lijn trekken, dat is de volgende lijn:
+Laten we eerst proberen een formule te construeren, die ervoor zorgt dat we twee verschillende punten bij elkaar op kunnen tellen.
+Stel we tellen $(x_A,y_A)$ bij $(x_B,y_B)$ op, met als $x_A=x_B$ dan $y_B\neq -y_A,y_A$. We lopen het algoritme af en vinden een formule voor de lijn die we zouden trekken:
 \begin{equation}
 L(x) = \frac{y_A - y_B}{x_A - x_B} (x - x_B) + y_B 
 \end{equation}
-Om aan het andere snijpunt te komen hoeven we alleen maar de andere wortel van de volgende vergelijking te vinden:
+Om aan het andere snijpunt te komen, hoeven we alleen maar de andere wortel van de volgende vergelijking te vinden:
 \begin{equation}
 (L(x))^2 = x^3 + ax + b 
 \end{equation}
-Omdat we de twee andere wortels al hebben kunnen we dit gemakkelijk oplossen met Vieta's formule.
+Omdat we de twee andere wortels al hebben, kunnen we dit gemakkelijk oplossen met Vieta's formule(BRON).
 Volgens die formule geldt het volgende:\\
 Als je een polynoom van de vorm $$\sum_{k=0}^n a_kx^k$$ hebt, geldt als $\{x_1,x_2,...,x_n\}$ de wortels van die polynoom zijn (inclusief dubbele): $$\sum_{k=1}^n x_n =-\frac{a_{n-1}}{a_n}.$$
-Ofwel bij deze formule hoeven we alleen nog maar de co\"efficient van $x^2$ te vinden. Als we dit uitwerken hebben we $$a_2 = (\frac{y_A - y_B}{x_A - x_B})^2$$ dus $$x_C = (\frac{y_A - y_B}{x_A - x_B})^2 - x_A - x_B.$$ De bijbehorende $y_C$ krijgen we door hem in te vullen: $$y_C= \frac{y_A - y_B}{x_A - x_B} (x_C - x_B) + y_B$$
+Ofwel bij deze formule hoeven we alleen nog maar de co\"efficient van $x^2$ te vinden. Als we dit uitwerken hebben we $$a_2 = (\frac{y_A - y_B}{x_A - x_B})^2$$ dus $$x_C = (\frac{y_A - y_B}{x_A - x_B})^2 - x_A - x_B.$$ De bijbehorende $y_C$ krijgen we door hem in te vullen: $$y_C= \frac{y_A - y_B}{x_A - x_B} (x_C - x_B) + y_B.$$
 Laten we nu het snijpunt gaan vinden als we een punt bij zichzelf optellen.
 Eerst moeten we de helling van de elliptische kromme in ons punt vinden. Dit kunnen we voor elkaar krijgen door impliciete differentiatie:\\
-We nemen de afgeleide naar $x$ aan beide kanten van onze vergelijking van de elliptische kromme.
+we nemen de afgeleide naar $x$ aan beide kanten van onze vergelijking van de elliptische kromme.
 \begin{equation}
 \frac{\partial}{\partial x}(y^2) = \frac{\partial}{\partial x}(x^3 + ax + b).
 \end{equation}
@@ -116,7 +116,7 @@ Resultaat is dat we nu de vergelijking voor de beschreven lijn hebben, gegeven w
 $$L(x) = \frac{3x^2 +a}{2y}(x - x_A) + y_A.$$
 Met hetzelfde proces, dus ook het toepassen van Vieta's formule krijgen we:
 $$x_B = (\frac{3x^2 +a}{2y}(x - x_A))^2 - 2x_A \textit{ en } y_B  = \frac{3x^2 +a}{2y}(x_B - x_A) + y_A.$$
-Nu hebben we dus alles wat nodig is om zonder de lijnen te trekken het laatste snijpunt te vinden, wat niet vergeten moet worden is dat om de optelling te voltooien dit punt nog gespiegeld moeten worden in de $x$-as, ofwel als het laatste snijpunt $(x_R,y_R)$ is het resultaat van de optelling $(-x_R,y_R)$.
+Nu hebben we dus alles wat nodig is om zonder de lijnen te trekken het laatste snijpunt te vinden. Wat niet vergeten moet worden, is dat om de optelling te voltooien dit punt nog gespiegeld moet worden in de $x$-as, ofwel als het laatste snijpunt $(x_R,y_R)$ is, hebben we als resultaat van de optelling $(-x_R,y_R)$.
 \section{Ondertekenen}
 Voor het ondertekenen van de berichten gebruiken we een HMAC (Hash-based Message Authentication Code). Voor HMAC is een cryptografisch veilige hash-functie nodig, hiervoor gebruiken we SHA256. Anders dan bij gebruikelijke hashfuncties zijn deze gemaakt op zo'n manier dat het erg moeilijk is om twee inputs te vinden die dezelfde output geven, daarnaast moet de input niet te achterhalen zijn. De input die wij gebruiken is de versleutelde tekst. 
 \section{Implementatie: chat applicatie}
