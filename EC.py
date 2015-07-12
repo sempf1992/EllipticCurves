@@ -159,7 +159,7 @@ class Punt:
     def __sub__(self,other): # trekt b van a af
         if not self.curve == other.curve:
             raise ValueError('Points are on different curves')
-        return self  + other.inverteer()
+        return self  +  (-1 * other)
 
     def __mul__(self,scalar): # telt a scalar maal bij a op
         return scalar * self
